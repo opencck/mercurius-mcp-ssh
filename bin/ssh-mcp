@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// An MCP server over stdio for one SSH server: node-free, run as `php bin/ssh-mcp --host=… --user=… [--port=…]
+// [--key=…] --host-key=SHA256:…`, the password in SSH_PASSWORD, a key's passphrase in SSH_KEY_PASSPHRASE.
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use Mercurius\McpSsh\Options;
+use Mercurius\McpSsh\Server;
+use Mercurius\McpSsh\SshRemote;
+
+try {
+    /** @var array<string, string> $env */
+    $env = getenv();
+    $options = Options::from(array_values(array_filter($argv, 'is_string')), $env);
+} catch (InvalidArgumentException $e) {
+    fwrite(STDERR, $e->getMessage() . "\n");
+    exit(2);
+}
+(new Server(new SshRemote($options)))->serve(Amp\ByteStream\getStdin(), Amp\ByteStream\getStdout());

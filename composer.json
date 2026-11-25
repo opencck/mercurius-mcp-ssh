@@ -1,0 +1,57 @@
+{
+    "name": "opencck/mercurius-mcp-ssh",
+    "description": "An MCP server over stdio for one SSH server: commands, files through cat and a TCP probe, with a pinned host key; built on AMPHP",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["amphp", "mcp", "ssh", "agent"],
+    "require": {
+        "php": ">=8.2",
+        "amphp/amp": "^3",
+        "amphp/byte-stream": "^2",
+        "amphp/socket": "^2",
+        "amphp/ssh": "dev-master"
+    },
+    "require-dev": {
+        "amphp/phpunit-util": "^3",
+        "phpstan/phpstan": "^2",
+        "phpunit/phpunit": "^9.6",
+        "psalm/plugin-phpunit": "^0.22.2",
+        "vimeo/psalm": "^6"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/rekryt/amphp-ssh"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Mercurius\\McpSsh\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mercurius\\McpSsh\\Test\\": "test/"
+        }
+    },
+    "bin": ["bin/ssh-mcp"],
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.27"
+        },
+        "allow-plugins": {}
+    },
+    "scripts": {
+        "test": "php -d zend.assertions=1 -d assert.exception=1 vendor/bin/phpunit",
+        "phpstan": "phpstan analyse --no-progress --memory-limit=1G",
+        "psalm": "psalm --no-progress --show-info=false",
+        "check": [
+            "@test",
+            "@phpstan",
+            "@psalm"
+        ]
+    }
+}
