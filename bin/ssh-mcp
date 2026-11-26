@@ -23,3 +23,5 @@ try {
     exit(2);
 }
 (new Server(new SshRemote($options), $options))->serve(Amp\ByteStream\getStdin(), Amp\ByteStream\getStdout());
+// stdin ended: the client is gone; a kept SSH connection would hold the event loop, so the process ends here
+exit(0);
