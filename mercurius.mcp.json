@@ -1,0 +1,7 @@
+{
+  "steps": ["composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader"],
+  "entry": {
+    "command": "php",
+    "args": ["${INSTALL_DIR}/bin/ssh-mcp"]
+  }
+}

@@ -9,7 +9,8 @@ namespace Mercurius\McpSsh;
  * server, so its owner can pin that key — the server never trusts a key by itself.
  */
 final class HostKeyRefused extends \RuntimeException {
-    public function __construct(public readonly string $fingerprint, public readonly bool $changed) {
-        parent::__construct(sprintf('UNKNOWN_HOST_KEY %s %s', $fingerprint, $changed ? 'changed' : 'new'));
+    /** @param bool $jump the key is of the server in between */
+    public function __construct(public readonly string $fingerprint, public readonly bool $changed, public readonly bool $jump = false) {
+        parent::__construct(sprintf('UNKNOWN_HOST_KEY %s %s%s', $fingerprint, $changed ? 'changed' : 'new', $jump ? ' jump' : ''));
     }
 }

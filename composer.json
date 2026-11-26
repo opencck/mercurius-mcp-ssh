@@ -3,13 +3,19 @@
     "description": "An MCP server over stdio for one SSH server: commands, files through cat and a TCP probe, with a pinned host key; built on AMPHP",
     "type": "library",
     "license": "MIT",
-    "keywords": ["amphp", "mcp", "ssh", "agent"],
+    "keywords": [
+        "amphp",
+        "mcp",
+        "ssh",
+        "agent"
+    ],
     "require": {
         "php": ">=8.2",
         "amphp/amp": "^3",
         "amphp/byte-stream": "^2",
         "amphp/socket": "^2",
-        "amphp/ssh": "dev-master"
+        "amphp/ssh": "dev-master",
+        "opencck/mercurius-connectors": "dev-master"
     },
     "require-dev": {
         "amphp/phpunit-util": "^3",
@@ -22,6 +28,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/rekryt/amphp-ssh"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/opencck/mercurius-connectors"
         }
     ],
     "minimum-stability": "dev",
@@ -36,7 +46,9 @@
             "Mercurius\\McpSsh\\Test\\": "test/"
         }
     },
-    "bin": ["bin/ssh-mcp"],
+    "bin": [
+        "bin/ssh-mcp"
+    ],
     "config": {
         "sort-packages": true,
         "platform": {

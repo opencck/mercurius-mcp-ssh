@@ -4,7 +4,9 @@
 declare(strict_types=1);
 
 // An MCP server over stdio for one SSH server: node-free, run as `php bin/ssh-mcp --host=… --user=… [--port=…]
-// [--key=…] --host-key=SHA256:…`, the password in SSH_PASSWORD, a key's passphrase in SSH_KEY_PASSPHRASE.
+// [--key=…] --host-key=SHA256:… [--jump-host=… --jump-user=… --jump-port=… --jump-host-key=…]`; from the environment:
+// SSH_PASSWORD, SSH_PRIVATE_KEY, SSH_KEY_PASSPHRASE, SSH_PROXY (http://, socks5:// or vless://), SSH_JUMP_PASSWORD,
+// SSH_JUMP_PRIVATE_KEY.
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -20,4 +22,4 @@ try {
     fwrite(STDERR, $e->getMessage() . "\n");
     exit(2);
 }
-(new Server(new SshRemote($options)))->serve(Amp\ByteStream\getStdin(), Amp\ByteStream\getStdout());
+(new Server(new SshRemote($options), $options))->serve(Amp\ByteStream\getStdin(), Amp\ByteStream\getStdout());

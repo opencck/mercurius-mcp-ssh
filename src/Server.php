@@ -18,13 +18,13 @@ final class Server {
     private const FILE_MAX = 1_048_576;
     private const LINE_MAX = 4_194_304;
 
-    public function __construct(private readonly Remote $remote) {}
+    public function __construct(private readonly Remote $remote, private readonly Options $options) {}
 
     /** @return list<array<string, mixed>> */
     public static function tools(): array {
         $path = ['type' => 'string', 'maxLength' => 4096];
         return [
-            ['name' => 'run', 'description' => 'Runs a shell command on the server and returns its exit code and output.', 'inputSchema' => ['type' => 'object', 'properties' => ['command' => ['type' => 'string', 'maxLength' => 20000], 'stdin' => ['type' => 'string', 'maxLength' => self::FILE_MAX], 'timeout' => ['type' => 'integer', 'minimum' => 1, 'maximum' => self::TIMEOUT_MAX]], 'required' => ['command'], 'additionalProperties' => false]],
+            ['name' => 'run', 'description' => 'Runs a shell command on the server and returns its exit code and output. A command of one part that starts with sudo gets the login password on stdin.', 'inputSchema' => ['type' => 'object', 'properties' => ['command' => ['type' => 'string', 'maxLength' => 20000], 'stdin' => ['type' => 'string', 'maxLength' => self::FILE_MAX], 'timeout' => ['type' => 'integer', 'minimum' => 1, 'maximum' => self::TIMEOUT_MAX]], 'required' => ['command'], 'additionalProperties' => false], 'outputSchema' => ['type' => 'object', 'properties' => ['exit' => ['type' => ['integer', 'null']], 'stdout' => ['type' => 'string'], 'stderr' => ['type' => 'string'], 'cut' => ['type' => 'boolean']], 'required' => ['exit', 'stdout', 'stderr', 'cut']]],
             ['name' => 'read_file', 'description' => 'Reads a file of the server, up to 1 MB.', 'inputSchema' => ['type' => 'object', 'properties' => ['path' => $path], 'required' => ['path'], 'additionalProperties' => false], 'annotations' => ['readOnlyHint' => true]],
             ['name' => 'write_file', 'description' => 'Writes a file on the server (the content goes through cat), up to 1 MB.', 'inputSchema' => ['type' => 'object', 'properties' => ['path' => $path, 'content' => ['type' => 'string', 'maxLength' => self::FILE_MAX]], 'required' => ['path', 'content'], 'additionalProperties' => false]],
             ['name' => 'tcp_probe', 'description' => 'Checks from the server whether a TCP port answers.', 'inputSchema' => ['type' => 'object', 'properties' => ['host' => ['type' => 'string', 'maxLength' => 253], 'port' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 65535]], 'required' => ['host', 'port'], 'additionalProperties' => false], 'annotations' => ['readOnlyHint' => true]],
@@ -83,9 +83,12 @@ final class Server {
 
     /**
      * @param array<array-key, mixed> $params
-     * @return array{content: list<array{type: string, text: string}>, isError: bool}
+     * @return array{content: list<array{type: string, text: string}>, isError: bool, structuredContent?: array<string, mixed>}
      */
     private function call(array $params): array {
+        if (!$this->options->configured()) {
+            return self::answer('This entry names no server: --host and --user are needed', true);
+        }
         /** @psalm-suppress MixedAssignment the arguments are any JSON; each is checked where it is used */
         $args = $params['arguments'] ?? null;
         $args = is_array($args) ? $args : [];
@@ -101,7 +104,7 @@ final class Server {
         };
         try {
             return match ($params['name'] ?? null) {
-                'run' => self::shown($this->remote->run($text('command') ?? '', $text('stdin'), self::timeout($number('timeout')))),
+                'run' => $this->command($text('command') ?? '', $text('stdin'), self::timeout($number('timeout'))),
                 'read_file' => self::file($this->remote->run('head -c ' . self::FILE_MAX . ' -- ' . SshRemote::quote($text('path') ?? ''), null, self::TIMEOUT_DEFAULT)),
                 'write_file' => self::shown($this->remote->run('cat > ' . SshRemote::quote($text('path') ?? ''), $text('content') ?? '', self::TIMEOUT_DEFAULT)),
                 'tcp_probe' => self::shown($this->remote->run(self::probe($text('host') ?? '', $number('port') ?? 0), null, 15)),
@@ -110,6 +113,22 @@ final class Server {
         } catch (HostKeyRefused | RemoteFailure $e) {
             return self::answer($e->getMessage(), true);
         }
+    }
+
+    /**
+     * A command, with the login password given to a sudo at its start; the password is taken out of what comes back.
+     *
+     * @return array{content: list<array{type: string, text: string}>, isError: bool, structuredContent?: array<string, mixed>}
+     */
+    private function command(string $command, #[\SensitiveParameter] ?string $stdin, int $timeout): array {
+        $sudo = Sudo::wrap($command, $this->options->password);
+        if ($sudo !== null && $stdin !== null) {
+            return self::answer('A sudo command reads the password on stdin and takes no stdin of its own', true);
+        }
+        $result = $sudo === null ? $this->remote->run($command, $stdin, $timeout) : $this->remote->run($sudo[0], $sudo[1], $timeout);
+        $password = $this->options->password;
+        $result = new Result($result->exit, Sudo::hide($result->stdout, $password), Sudo::hide($result->stderr, $password), $result->cut);
+        return self::shown($result) + ['structuredContent' => ['exit' => $result->exit, 'stdout' => $result->stdout, 'stderr' => $result->stderr, 'cut' => $result->cut]];
     }
 
     /** A port check from the server, without nc: bash's /dev/tcp, cut at 5 seconds. */

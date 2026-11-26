@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4e15f9552626bd7ad88bbd342eef61d",
+    "content-hash": "e4cb721f1db3e9564fa9b85bb8c9c7ca",
     "packages": [
         {
             "name": "amphp/amp",
@@ -401,6 +401,309 @@
                 }
             ],
             "time": "2026-05-09T15:40:03+00:00"
+        },
+        {
+            "name": "amphp/hpack",
+            "version": "v3.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/hpack.git",
+                "reference": "291da27078e7e149a9bad4d08ff05bf7d81c89f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/hpack/zipball/291da27078e7e149a9bad4d08ff05bf7d81c89f4",
+                "reference": "291da27078e7e149a9bad4d08ff05bf7d81c89f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2",
+                "http2jp/hpack-test-case": "^1",
+                "nikic/php-fuzzer": "^0.0.11",
+                "phpunit/phpunit": "^7 | ^8 | ^9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Http\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@php.net"
+                },
+                {
+                    "name": "Bob Weinand"
+                },
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                }
+            ],
+            "description": "HTTP/2 HPack implementation.",
+            "homepage": "https://github.com/amphp/hpack",
+            "keywords": [
+                "headers",
+                "hpack",
+                "http-2"
+            ],
+            "support": {
+                "issues": "https://github.com/amphp/hpack/issues",
+                "source": "https://github.com/amphp/hpack/tree/v3.2.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/amphp",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-05-03T19:28:59+00:00"
+        },
+        {
+            "name": "amphp/http",
+            "version": "v2.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/http.git",
+                "reference": "3680d80bd38b5d6f3c2cef2214ca6dd6cef26588"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/http/zipball/3680d80bd38b5d6f3c2cef2214ca6dd6cef26588",
+                "reference": "3680d80bd38b5d6f3c2cef2214ca6dd6cef26588",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/hpack": "^3",
+                "amphp/parser": "^1.1",
+                "league/uri-components": "^2.4.2 | ^7.1",
+                "php": ">=8.1",
+                "psr/http-message": "^1 | ^2"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2",
+                "league/uri": "^6.8 | ^7.1",
+                "phpunit/phpunit": "^9",
+                "psalm/phar": "^5.26.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php",
+                    "src/Internal/constants.php"
+                ],
+                "psr-4": {
+                    "Amp\\Http\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                }
+            ],
+            "description": "Basic HTTP primitives which can be shared by servers and clients.",
+            "support": {
+                "issues": "https://github.com/amphp/http/issues",
+                "source": "https://github.com/amphp/http/tree/v2.1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/amphp",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-23T14:57:26+00:00"
+        },
+        {
+            "name": "amphp/http-client",
+            "version": "v5.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/http-client.git",
+                "reference": "be5bf6a84e7b02bcf763020358833824f414c3bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/http-client/zipball/be5bf6a84e7b02bcf763020358833824f414c3bb",
+                "reference": "be5bf6a84e7b02bcf763020358833824f414c3bb",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^3",
+                "amphp/byte-stream": "^2",
+                "amphp/hpack": "^3",
+                "amphp/http": "^2",
+                "amphp/pipeline": "^1",
+                "amphp/socket": "^2",
+                "amphp/sync": "^2",
+                "league/uri": "^7",
+                "league/uri-components": "^7",
+                "league/uri-interfaces": "^7.1",
+                "php": ">=8.1",
+                "psr/http-message": "^1 | ^2",
+                "revolt/event-loop": "^1"
+            },
+            "conflict": {
+                "amphp/file": "<3 | >=5"
+            },
+            "require-dev": {
+                "amphp/file": "^3 | ^4",
+                "amphp/http-server": "^3",
+                "amphp/php-cs-fixer-config": "^2",
+                "amphp/phpunit-util": "^3",
+                "ext-json": "*",
+                "kelunik/link-header-rfc5988": "^1",
+                "phpunit/phpunit": "^9",
+                "psalm/phar": "6.16.1"
+            },
+            "suggest": {
+                "amphp/file": "Required for file request bodies and HTTP archive logging",
+                "ext-json": "Required for logging HTTP archives",
+                "ext-zlib": "Allows using compression for response bodies."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php",
+                    "src/Internal/functions.php"
+                ],
+                "psr-4": {
+                    "Amp\\Http\\Client\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@gmail.com"
+                },
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                }
+            ],
+            "description": "An advanced async HTTP client library for PHP, enabling efficient, non-blocking, and concurrent requests and responses.",
+            "homepage": "https://amphp.org/http-client",
+            "keywords": [
+                "async",
+                "client",
+                "concurrent",
+                "http",
+                "non-blocking",
+                "rest"
+            ],
+            "support": {
+                "issues": "https://github.com/amphp/http-client/issues",
+                "source": "https://github.com/amphp/http-client/tree/v5.3.8"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/amphp",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-11-11T03:22:40+00:00"
+        },
+        {
+            "name": "amphp/http-tunnel",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/http-tunnel.git",
+                "reference": "11a4fc1ea658bb85ceeefaf6ad5b28a1ff85ae19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/http-tunnel/zipball/11a4fc1ea658bb85ceeefaf6ad5b28a1ff85ae19",
+                "reference": "11a4fc1ea658bb85ceeefaf6ad5b28a1ff85ae19",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^3",
+                "amphp/byte-stream": "^2",
+                "amphp/http": "^2.1",
+                "amphp/http-client": "^5",
+                "amphp/socket": "^2.3",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "^2",
+                "amphp/phpunit-util": "^3",
+                "leproxy/leproxy": "^0.2.2",
+                "phpunit/phpunit": "^9",
+                "psalm/phar": "~5.23.0",
+                "revolt/event-loop-adapter-react": "^1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Http\\Tunnel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                }
+            ],
+            "description": "HTTP/1.1 CONNECT tunnel connector built on the Amp concurrency framework",
+            "homepage": "https://github.com/amphp/http-tunnel",
+            "keywords": [
+                "amphp",
+                "async",
+                "connect",
+                "connector",
+                "http",
+                "tunnel"
+            ],
+            "support": {
+                "issues": "https://github.com/amphp/http-tunnel/issues",
+                "source": "https://github.com/amphp/http-tunnel/tree/v2.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/amphp",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-10-25T17:46:18+00:00"
         },
         {
             "name": "amphp/parallel",
@@ -1200,6 +1503,91 @@
             "time": "2026-11-04T12:45:07+00:00"
         },
         {
+            "name": "league/uri-components",
+            "version": "7.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri-components.git",
+                "reference": "2a790e66948d3504a2f2cd42b80d4b8874601540"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri-components/zipball/2a790e66948d3504a2f2cd42b80d4b8874601540",
+                "reference": "2a790e66948d3504a2f2cd42b80d4b8874601540",
+                "shasum": ""
+            },
+            "require": {
+                "league/uri": "^7.10.0",
+                "php": "^8.1"
+            },
+            "suggest": {
+                "ext-bcmath": "to improve IPV4 host parsing",
+                "ext-fileinfo": "to create Data URI from file contennts",
+                "ext-gmp": "to improve IPV4 host parsing",
+                "ext-intl": "to handle IDN host with the best performance",
+                "ext-mbstring": "to use the sorting algorithm for Query parameter",
+                "jeremykendall/php-domain-parser": "to further parse the URI host and resolve its Public Suffix and Top Level Domain",
+                "league/uri-polyfill": "to backport the PHP URI extension for older versions of PHP",
+                "php-64bit": "to improve IPV4 host parsing",
+                "rowbot/url": "to handle URLs using the WHATWG URL Living Standard specification",
+                "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present",
+                "symfony/polyfill-mbstring": "to handle query sorting if ext-mbstring is not present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "URI components manipulation library",
+            "homepage": "http://uri.thephpleague.com",
+            "keywords": [
+                "authority",
+                "components",
+                "fragment",
+                "host",
+                "middleware",
+                "modifier",
+                "path",
+                "port",
+                "query",
+                "rfc3986",
+                "scheme",
+                "uri",
+                "url",
+                "userinfo"
+            ],
+            "support": {
+                "docs": "https://uri.thephpleague.com",
+                "forum": "https://thephpleague.slack.com",
+                "issues": "https://github.com/thephpleague/uri-src/issues",
+                "source": "https://github.com/thephpleague/uri-components/tree/7.10.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/nyamsprod",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-11-04T12:45:07+00:00"
+        },
+        {
             "name": "league/uri-interfaces",
             "version": "7.10.0",
             "source": {
@@ -1282,6 +1670,87 @@
                 }
             ],
             "time": "2026-11-04T12:45:07+00:00"
+        },
+        {
+            "name": "opencck/mercurius-connectors",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opencck/mercurius-connectors.git",
+                "reference": "0b2faa81f266d3601ea0bf8d149ca7bb0dc0be8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opencck/mercurius-connectors/zipball/0b2faa81f266d3601ea0bf8d149ca7bb0dc0be8b",
+                "reference": "0b2faa81f266d3601ea0bf8d149ca7bb0dc0be8b",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^3",
+                "amphp/byte-stream": "^2",
+                "amphp/http-tunnel": "^2",
+                "amphp/socket": "^2",
+                "php": ">=8.2",
+                "psr/log": "^3",
+                "rekryt/amphp-vless": "^1.1"
+            },
+            "require-dev": {
+                "amphp/http-client": "^5",
+                "amphp/phpunit-util": "^3",
+                "phpstan/phpstan": "^2",
+                "phpunit/phpunit": "^9.6",
+                "psalm/plugin-phpunit": "^0.22.2",
+                "vimeo/psalm": "^6"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mercurius\\Connectors\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Mercurius\\Connectors\\Test\\": "test/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "php -d zend.assertions=1 -d assert.exception=1 vendor/bin/phpunit --exclude-group integration"
+                ],
+                "test-integration": [
+                    "php -d zend.assertions=1 -d assert.exception=1 vendor/bin/phpunit --group integration"
+                ],
+                "phpstan": [
+                    "phpstan analyse --no-progress --memory-limit=1G"
+                ],
+                "psalm": [
+                    "psalm --no-progress --show-info=false"
+                ],
+                "check": [
+                    "@test",
+                    "@phpstan",
+                    "@psalm"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Outbound connection routes for AMPHP: direct, HTTP CONNECT, SOCKS5, VLESS and chains of them as an AMPHP SocketConnector",
+            "keywords": [
+                "amphp",
+                "connector",
+                "http-connect",
+                "proxy",
+                "socket",
+                "socks5",
+                "vless"
+            ],
+            "support": {
+                "source": "https://github.com/opencck/mercurius-connectors/tree/master",
+                "issues": "https://github.com/opencck/mercurius-connectors/issues"
+            },
+            "time": "2026-11-21T02:10:40+00:00"
         },
         {
             "name": "paragonie/sodium_compat",
@@ -1536,6 +2005,85 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "rekryt/amphp-vless",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rekryt/amphp-vless.git",
+                "reference": "065417fbcfc5264c9e08a04374cc24d0e9f3a513"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rekryt/amphp-vless/zipball/065417fbcfc5264c9e08a04374cc24d0e9f3a513",
+                "reference": "065417fbcfc5264c9e08a04374cc24d0e9f3a513",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^3.1",
+                "amphp/byte-stream": "^2.1",
+                "amphp/hpack": "^3.2",
+                "amphp/http": "^2.1",
+                "amphp/socket": "^2.4",
+                "ext-openssl": "*",
+                "php": ">=8.2",
+                "psr/log": "^3"
+            },
+            "require-dev": {
+                "amphp/dns": "^2.4",
+                "amphp/http-client": "5",
+                "amphp/http-server": "^3",
+                "amphp/http-server-form-parser": "^2",
+                "amphp/mysql": "^3",
+                "amphp/phpunit-util": "^3",
+                "amphp/redis": "^2",
+                "amphp/ssh": "dev-master",
+                "amphp/sync": "^2.3",
+                "amphp/websocket-client": "2",
+                "phpunit/phpunit": "^9.6",
+                "psalm/phar": "6.0",
+                "vlucas/phpdotenv": "^5.6"
+            },
+            "suggest": {
+                "amphp/http-client": "To make HTTP/HTTPS requests through the VLESS tunnel",
+                "amphp/http-server": "To expose the tunnel as a local HTTP proxy or reverse proxy"
+            },
+            "bin": [
+                "bin/vless-proxy"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\Vless\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Krupkin",
+                    "email": "rekrytkw@gmail.com"
+                }
+            ],
+            "description": "Async VLESS client for PHP based on Amp.",
+            "homepage": "https://github.com/rekryt/amphp-vless",
+            "keywords": [
+                "amp",
+                "amphp",
+                "async",
+                "client",
+                "sing-box",
+                "vless",
+                "xray"
+            ],
+            "support": {
+                "issues": "https://github.com/rekryt/amphp-vless/issues",
+                "source": "https://github.com/rekryt/amphp-vless/tree/v1.1.1"
+            },
+            "time": "2026-08-06T19:53:09+00:00"
         },
         {
             "name": "revolt/event-loop",
@@ -5458,7 +6006,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "amphp/ssh": 20
+        "amphp/ssh": 20,
+        "opencck/mercurius-connectors": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
