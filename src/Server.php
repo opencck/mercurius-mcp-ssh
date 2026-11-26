@@ -105,7 +105,7 @@ final class Server {
         try {
             return match ($params['name'] ?? null) {
                 'run' => $this->command($text('command') ?? '', $text('stdin'), self::timeout($number('timeout'))),
-                'read_file' => self::file($this->remote->run('head -c ' . self::FILE_MAX . ' -- ' . SshRemote::quote($text('path') ?? ''), null, self::TIMEOUT_DEFAULT)),
+                'read_file' => self::file($this->remote->run('head -c ' . self::FILE_MAX . ' -- ' . SshRemote::quote($text('path') ?? ''), null, self::TIMEOUT_DEFAULT, self::FILE_MAX)),
                 'write_file' => self::shown($this->remote->run('cat > ' . SshRemote::quote($text('path') ?? ''), $text('content') ?? '', self::TIMEOUT_DEFAULT)),
                 'tcp_probe' => self::shown($this->remote->run(self::probe($text('host') ?? '', $number('port') ?? 0), null, 15)),
                 default => self::answer('Unknown tool', true),

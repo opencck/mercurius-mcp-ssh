@@ -36,7 +36,7 @@ final class SshRemote implements Remote {
 
     public function __construct(private readonly Options $options) {}
 
-    public function run(string $command, #[\SensitiveParameter] ?string $stdin, int $timeout): Result {
+    public function run(string $command, #[\SensitiveParameter] ?string $stdin, int $timeout, int $keep = self::OUTPUT_MAX): Result {
         for ($try = 0; ; $try++) {
             $ssh = $this->connection();
             $process = new Process($ssh, sprintf('timeout --kill-after=5 %d sh -c %s', $timeout, self::quote($command)));
@@ -50,19 +50,19 @@ final class SshRemote implements Remote {
                 }
                 throw new RemoteFailure('The command did not start: ' . $e->getMessage());
             }
-            return $this->finish($process, $stdin, $timeout);
+            return $this->finish($process, $stdin, $timeout, $keep);
         }
     }
 
-    private function finish(Process $process, #[\SensitiveParameter] ?string $stdin, int $timeout): Result {
+    private function finish(Process $process, #[\SensitiveParameter] ?string $stdin, int $timeout, int $keep): Result {
         try {
             if ($stdin !== null) {
                 $process->getStdin()->write($stdin);
             }
             $process->getStdin()->end();
             $deadline = new TimeoutCancellation((float) $timeout + 15.0);
-            $out = async(static fn(): Drained => self::drain($process->getStdout(), $deadline));
-            $err = async(static fn(): Drained => self::drain($process->getStderr(), $deadline));
+            $out = async(static fn(): Drained => self::drain($process->getStdout(), $deadline, $keep));
+            $err = async(static fn(): Drained => self::drain($process->getStderr(), $deadline, $keep));
             $stdout = self::drained($out);
             $stderr = self::drained($err);
             $exit = $process->join($deadline);
@@ -176,16 +176,16 @@ final class SshRemote implements Remote {
         return "'" . str_replace("'", "'\\''", $text) . "'";
     }
 
-    private static function drain(ReadableStream $stream, Cancellation $cancellation): Drained {
+    private static function drain(ReadableStream $stream, Cancellation $cancellation, int $keep): Drained {
         $kept = '';
         $total = 0;
         while (($chunk = $stream->read($cancellation)) !== null) {
             $total += strlen($chunk);
-            if (strlen($kept) < self::OUTPUT_MAX) {
-                $kept .= substr($chunk, 0, self::OUTPUT_MAX - strlen($kept));
+            if (strlen($kept) < $keep) {
+                $kept .= substr($chunk, 0, $keep - strlen($kept));
             }
         }
-        return new Drained($kept, $total > self::OUTPUT_MAX);
+        return new Drained($kept, $total > $keep);
     }
 
     /** @param \Amp\Future<mixed> $future */

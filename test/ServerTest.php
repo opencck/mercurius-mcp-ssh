@@ -115,6 +115,7 @@ final class ServerTest extends TestCase {
 
         self::assertSame(["cat > '/etc/it'\\''s'", 'data', 60], $remote->runs[0]);
         self::assertSame("head -c 1048576 -- '/etc/hosts'", $remote->runs[1][0]);
+        self::assertSame([65536, 1048576], $remote->limits, 'a file is kept whole up to its limit, the output of a command to its own');
     }
 
     public function testAProbeTakesOnlyAHostAndAPort(): void {
@@ -144,11 +145,14 @@ final class ServerTest extends TestCase {
 final class FakeRemote implements Remote {
     /** @var list<array{string, ?string, int}> */
     public array $runs = [];
+    /** @var list<int> */
+    public array $limits = [];
 
     public function __construct(private readonly Result $result, private readonly ?\Throwable $failure) {}
 
-    public function run(string $command, ?string $stdin, int $timeout): Result {
+    public function run(string $command, ?string $stdin, int $timeout, int $keep = \Mercurius\McpSsh\SshRemote::OUTPUT_MAX): Result {
         $this->runs[] = [$command, $stdin, $timeout];
+        $this->limits[] = $keep;
         if ($this->failure !== null) {
             throw $this->failure;
         }
